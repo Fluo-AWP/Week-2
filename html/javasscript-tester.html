@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+	<title>Javascript Tester</title>
+	<meta name="description" content="" />
+  	<meta name="keywords" content="" />
+	<meta name="robots" content="" />
+</head>
+<body>
+	<textarea id="js-area" name="js-area" rows="10" cols="100" placeholder="place you js code here..."></textarea>
+	<button id="run-js-btn">Run JS</button>
+	<div id="results">
+		
+	</div>
+</body>
+<script type="text/javascript">
+	var runJSBtn = document.getElementById('run-js-btn'),
+		jsArea = document.getElementById('js-area'),
+		results = document.getElementById('results'),
+	
+		runJS = function () {
+			var	code = jsArea.value,
+				result = eval(code);
+			results.innerHTML = result;
+		};
+	
+	runJSBtn.addEventListener('click', runJS);
+</script>
+</html>
