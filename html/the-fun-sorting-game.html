@@ -21,14 +21,20 @@
 	</style>
 	</head>
 	<body>
+		<div id="games-played-container"></div>
 		<ul id="number-list">
 		</ul>
 	</body>
 	<script type="text/javascript">
+		
+		//! Field Variables
 		var numberList = document.getElementById('number-list'),
-			numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort(function () { return .5 - Math.random()}),
+			gamesPlayedContainer = document.getElementById('games-played-container'),
+			numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 			numberBeingDragged = null,
 			
+			
+		//! Drag and drop handlers
 			handleDragStart = function (e) {
 				this.style.opacity = '0.4'; 
 				numberBeingDragged = this;
@@ -54,6 +60,9 @@
 				if (e.stopPropagation) e.stopPropagation();
 				
 				if (numberBeingDragged != this) {
+					var thisNumber = parseInt(this.innerHTML);
+						draggedNumber = parseInt(numberBeingDragged.innerHTML);
+					swapNumbers(draggedNumber, thisNumber);
 					numberBeingDragged.innerHTML = this.innerHTML;
 					this.innerHTML = e.dataTransfer.getData('text/html');
 				}
@@ -63,20 +72,57 @@
 			
 			handleDragEnd = function (e) {
 				this.style.opacity = '1.0';
-			};
+			},
+			
+		//! Array modifiers and checkers
+			swapNumbers = function (sourceNumber, destNumber) {
+				numbers[numbers.indexOf(sourceNumber)] = destNumber;
+				numbers[numbers.indexOf(destNumber)] = sourceNumber;
+				console.log(numbers);
+				if (checkSorted(numbers)) {
+					if (confirm('You have won the sorting game! Try again?')) {
+						if(typeof(Storage) !== 'undefined') {
+							localStorage.gamesPlayed = parseInt(localStorage.gamesPlayed) + 1;
+						}
+						setup();
+					}
+				}
+			},
+			
+			checkSorted = function (arr) {
+				for (var i = 0; i < arr.length; i++) {
+					if (arr[i] > arr[i + 1]) {
+						return false;
+					}
+				}
+				return true;
+			},
 		
-		for (var numberIndex in numbers) {
-			var numberLi = document.createElement('li');
-			numberLi.className = 'number';
-			numberLi.setAttribute('draggable', 'true');
-			numberLi.innerHTML = numbers[numberIndex];
-			numberLi.addEventListener('dragstart', handleDragStart, false);
-			numberLi.addEventListener('dragenter', handleDragEnter, false);
-			numberLi.addEventListener('dragover', handleDragOver, false);
-			numberLi.addEventListener('dragleave', handleDragLeave, false);
-			numberLi.addEventListener('drop', handleDrop, false);
-			numberLi.addEventListener('dragend', handleDragEnd, false);
-			numberList.appendChild(numberLi);
-		}
+		//! Setup
+			setup = function () {
+				// Shuffle numbers
+				numbers = numbers.sort(function () { return .5 - Math.random()});
+				
+				// Insert numbers into clean list
+				numberList.innerHTML = '';
+				for (var numberIndex in numbers) {
+					var numberLi = document.createElement('li');
+					numberLi.className = 'number';
+					numberLi.setAttribute('draggable', 'true');
+					numberLi.innerHTML = numbers[numberIndex];
+					numberLi.addEventListener('dragstart', handleDragStart, false);
+					numberLi.addEventListener('dragenter', handleDragEnter, false);
+					numberLi.addEventListener('dragover', handleDragOver, false);
+					numberLi.addEventListener('dragleave', handleDragLeave, false);
+					numberLi.addEventListener('drop', handleDrop, false);
+					numberLi.addEventListener('dragend', handleDragEnd, false);
+					numberList.appendChild(numberLi);
+				}
+				if(typeof(Storage) !== 'undefined') {
+					gamesPlayedContainer.innerHTML = 'Du har spillet: <strong>'+ localStorage.gamesPlayed +'</strong> spil';
+				}
+			};
+			
+		setup();
 	</script>
 </html>
