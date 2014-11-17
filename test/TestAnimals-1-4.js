@@ -2,14 +2,14 @@ test('Questions 1-4: Test Animals propterties - created animals Cat and Dog and 
 	var myDog = new Dog('Vuffi'),
 		myCat = new Cat('Misser');
 		
-	ok(myDog.prototype.constructor === Pet, 'Dog\'s constructor is Pet - inheritance check');
-	ok(myCat.prototype.constructor === Pet, 'Cat\'s constructor is Pet - inheritance check');
+	ok(myDog instanceof Pet, 'Dog\'s constructor is Pet - inheritance check');
+	ok(myCat instanceof Pet, 'Cat\'s constructor is Pet - inheritance check');
 			
 	ok(typeof myDog.name === 'undefined', 'Called dog.name - should return undefined for encapsulated data');
 	ok(typeof myCat.name === 'undefined', 'Called cat.name - should return undefined for encapsulated data');
 	
 	ok(myDog.getName() === 'Vuffi', 'Called dog.getName() - should return the name \'Vuffi\'');
-	ok(myCat.getName() === 'Misser', 'Called dog.getName() - should return the name \'Misser\'');
+	ok(myCat.getName() === 'Misser', 'Called cat.getName() - should return the name \'Misser\'');
 	
 	ok(myDog.sound() === 'Wuf', 'Dog created should return \'Wuf\' on sound()');
 	ok(myCat.sound() === 'Meow', 'Cat created should return \'Meow\' on sound()');
