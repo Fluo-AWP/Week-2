@@ -1,3 +1,7 @@
+/********************************
+* This is for the questions 1-4
+*********************************/
+
 'use strict';
 var Pet = function (n) {
 	var name = n || '';
@@ -10,22 +14,15 @@ var Pet = function (n) {
 var Dog = function (n) {
 	Pet.call(this, n);
 	this.sound = function () {
-		return 'wuf';
-	};	
+		return 'Wuf';
+	};
+	this.prototype = new Pet;
 };
 
 var Cat = function (n) {
 	Pet.call(this, n);
 	this.sound = function () {
-		return 'meow';
+		return 'Meow';
 	};
+	this.prototype = new Pet;
 }
-
-var myDog = new Dog('Vuffi');
-print(myDog.getName() +' says: '+ myDog.sound());
-
-var myCat = new Cat('Misser');
-print(myCat.getName() +' says: '+ myCat.sound());
-
-var pet = new Pet('Should not work');
-print(pet.name);
