@@ -3,44 +3,28 @@
 *********************************/
 
 'use strict';
-var Pet = (function () {
-	var name;
+var Pet = (function (n) {
+	var name = n || '';
+	
+	this.getName = function () {
+		return name;
+	};
+});
 
-    function construct (n) {
-		name = n || '';
-    };
-    
-    construct.prototype.getName = function () {
-        return name;
-    };
+var Dog = function (n) {
+	Pet.call(this, n);
+	this.sound = function () {
+		return 'Wuf';
+	};
+	Object.freeze(this)
+};
+Dog.prototype = new Pet;
 
-    return construct;
-})();
-
-var Dog = (function () {
-    function construct(n) {
-        Pet.call(this, n);
-    }
-    
-    construct.prototype = Object.create(Pet.prototype);
-    construct.prototype.sound = function() {
-        return 'Wuf';
-    };
-
-	//Object.freeze(construct);
-    return construct;
-})()
-
-var Cat = (function (n) {
-	function construct(n) {
-        Pet.call(this, n);
-    }
-    
-    construct.prototype = Object.create(Pet.prototype);
-    construct.prototype.sound = function() {
-        return 'Meow';
-    };
-
-	//Object.freeze(construct);
-    return construct;
-})();
+var Cat = function (n) {
+	Pet.call(this, n);
+	this.sound = function () {
+		return 'Meow';
+	};
+	Object.freeze(this);
+}
+Cat.prototype = new Pet;
